@@ -27,7 +27,7 @@ After browsing I found few OCR's which I tried while working on this assignments
 
 6. Google Cloud Vision API(https://cloud.google.com/vision/)
 
-**Pre-processing:**
+# Pre-processing:
 
 Every OCR listed above outputs all the texts it detects on the given input. We want only selected sections of the aadhar enrolment/update form to be detected by the OCR (Eg:Name,Gender,etc) which will be our output and not the whole aadhar enrolment form.
 
@@ -55,44 +55,42 @@ Below an input image given in document pdf that has first being matched and then
 <div style="display:flex; justify-content:space-between;">
     <img src="Readme_images/3.png" width="600" height="600">
 </div>
-![Input with bounding boxes](Readme_images/3.png)
 
-
-**OCR:**
+# OCR:
 
 Now according to these each of these snapshots/bounding boxes are sent to OCR to perform text detection. First I tried Pytesseract and I found that since it was good for detecting printed text but it was giving bad accuracy while detecting handwritten text like below.
 
-![Pytesseract output](Readme_images/image4.png)
+![Pytesseract output](Readme_images/4.png)
 
 After reading few documentations I found that the accuracy of Pytesseract depends on many factors like the resolution of image, printed/handwritten text, blurriness, it is good for detecting text on high resolution printed documents.  
 
 Then I tried keras ocr. Keras ocr is great if we want to detect printed text on an random image which isn't a document but this ocr also failed to give good results.
 
 
-![Keras OCR output](Readme_images/image5.png)
+![Keras OCR output](Readme_images/5.png)
 
 
 After this I tried easyocr. Easyocr sometimes performed much better in comparison to keras and tesseract ocr but still it wasn't upto the mark.
 
 
-![EasyOCR output](Readme_images/image6.png)
+![EasyOCR output](Readme_images/6.png)
 
 EasyOCR performed better than keras and tesseract ocr on handwritten text. Then I tried TrOCR and it gave the best results compared to all above but the problem with TrOCR was after 5-6 it starts giving garbage values sometimes.
 
 I thought of using 3 TrOCR like while scanning every TrOCR will make 5 predictions and then next 5 ones be passed to the next one to do predictions and similarly for third. I tried this but still the issue was not solved but just reduced a bit.
 
 
-![TrOCR output](Readme_images/image7.png)
+![TrOCR output](Readme_images/7.png)
 
 Then I tried PaddleOCR. It gave better results compared keras and tesseract above and sometimes even better than TrOCR but on average TrOCR was performing better.
 
 
-![PaddleOCR output](Readme_images/image8.png)
+![PaddleOCR output](Readme_images/8.png)
 
 Then lastly I tried Google Vision API and it gave the best results compared to all above and was accurate like 95-96% time like below.
 
 
-![Google Vision API output](Readme_images/image9.png)
+![Google Vision API output](Readme_images/9.png)
 
 Hence lastly I ranked OCRs from best to worst as below(acc to me):
 
@@ -107,11 +105,11 @@ To avoid this I tried finding all the text boxes using cv2.morphology() which is
 The merged image which gets sent at once an example is given below
 
 
-![Merged input](Readme_images/image10.png)
+![Merged input](Readme_images/10.png)
 
 We can merge and send it all at once like above but the main problem is if any one of sequence is compromised (like one didn't got detected or missed) then whole sequence will be affected.
 
-The code for above is in `Final_codes` folder under name `GCV_free.ipynb`  
+The code for above is can be found in `GCV_free.ipynb`  
 
 The one where the code used API for every bounding box and sends 10-15 API request is `GCV_notfree.ipynb`  
 
@@ -126,7 +124,7 @@ Disadvantage of `GCV_notfree.ipynb':
 If API req per month exceeds 1000 we have to pay 1.5\$ for 1000-5million request
 
 
-**Checkbox:** 
+# Checkbox: 
 
 The form also had checkboxes. Checkboxes are not detected by these OCRs. For this I used only Opencv and functions like cv2.morphology() to detect vertical and horizontal edges.
 
@@ -147,20 +145,45 @@ The final image even after subtracting would contain horizontal and vertical edg
 Hence line_min_width=11 was giving results in between these two and seemed a good trade-off Hence selected 11.
 
 
-![Checkbox detection logic](Readme_images/image11.png)
+![Checkbox detection logic](Readme_images/11.png)
 
 Hence I tried to detect horizontal edges and vertical edges and subtracted it from original so only checkmark is retained.  And then I tried counting pixels inside it.  
 
 If a box had check its value would be high and if not then there might not be check in it.  I also observed if the checkmark was of blue color compared to black it was getting easily detected compared to black and giving much better results.
 
 
-![Detected checkboxes](Readme_images/image12.png)
+![Detected checkboxes](Readme_images/12.png)
 
 After trial and error I decided the range above. I also applied upper limit as 200 because if some situation like below occurred it would have no problem as its pixel value would cross 220 above approx.
 
 
-![Failing scenario](Readme_images/image13.png)  
+![Failing scenario](Readme_images/13.png)  
 
 Where would this fail?
 
-1. If the edges are not properly
+If the edges are not properly removed it will contribute to final pixelvalue and might lead to incorrect answer.
+    Here is the remaining part of the Markdown conversion:
+
+2. ![Failing scenario 2](Readme_images/14.png)  
+
+Here the checkmark is almost at border and since we used bounding boxes the part outside box will be eliminated and since the checkmark is nearly at edge it will be removed during cv2 morphological operation and will lead to false value.
+
+Same logic has been used in `GCV_free.ipynb` for `texts` also to similarly remove empty text boxes and give them value =0 and the ones with values are merged along axis=0 using Cv2.concatenate() and sent at once to API to get detection.  
+
+If empty boxes are directly concatenated along with the text one it can happen 3 text boxes were concatenated one of which was empty and after detection there will be only 2 output as one was empty box with text and then to match the correct input to correct output becomes difficult and sequence also gets compromised. Hence I tried to avoid this by only merging texts having values and sending that to API so if input text empty box would be =0 and the one with texts would be correctly matched and sequence wouldn't be compromised.
+
+Signatures detected are directly saved in folders.  
+
+In the end, Three algorithms have been proposed 
+
+1. **TrOCR**- Free, but not as accurate as Google Vision API, also gives many garbage values as the time goes.
+
+2. **GCV_free**: Can be used for 1000 forms per month for free. Drawback is if the cv2 operations fail to detect empty boxes it would be concatenated to text ones and during final outcome it will happens Eg: 5 input text boxes sent but only only 4 output were seen and to map which one from these 5input had empty box would not be ideal.  
+
+3. **GCV_notfree**: Very accurate. Also sequence doesn't get compromised even if the text box is empty. Only downsite is for evaluation of one form 10-15 times API is called and if 1000 req are exceeded per month then we have to pay 1.5\$  
+
+According to me GCV_notfree would be the ideal amongst all three because it is very accurate, sequence isn't compromised and even if 1000 req are exceeded by paying just 1.5\$ per month we get Units 1001 - 5,000,000 / month,
+
+`Allcodes.ipynb` contains all the testing and various OCR's that were tried during that time
+
+
