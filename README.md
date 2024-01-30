@@ -125,7 +125,7 @@ Advantage of `GCV_notfree.ipynb`:
 
 2. Chance of Sequence getting compromised is very less compared to `GCV_free.ipynb`
 
-Disadvantage of `GCV_notfree.ipynb':  
+Disadvantage of `GCV_notfree.ipynb`:  
 
 If API req per month exceeds 1000 we have to pay 1.5\$ for 1000-5million request
 
