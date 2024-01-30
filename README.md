@@ -113,7 +113,7 @@ The merged image which gets sent at once an example is given below
 
 ![Merged input](Readme_images/10.png)
 
-We can merge and send it all at once like above but the main problem is if any one of sequence is compromised (like one didn't got detected or missed) then whole sequence will be affected.
+We can merge and send it all at once like above but the main problem is if any one of sequence is compromised (for instance if one didn't got detected or is missed) then whole sequence will be affected.
 
 The code for above is can be found in `GCV_free.ipynb`  
 
