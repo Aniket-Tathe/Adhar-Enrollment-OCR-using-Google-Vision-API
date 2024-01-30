@@ -89,10 +89,12 @@ Then I tried PaddleOCR. It gave better results compared keras and tesseract abov
 
 ![PaddleOCR output](Readme_images/8.png)
 
-Then lastly I tried Google Vision API and it gave the best results compared to all above and was accurate like 95-96% time like below.
+Then lastly I tried Google Vision API and it gave the best results compared to all above and was accurate like 95-96% time like below. The result on one of the form can be seen below.
 
-
-![Google Vision API output](Readme_images/9.png)
+<div style="display:flex; justify-content:space-between;">
+    <img src="Data/3.jpg" width="450" height="500">
+    <img src="Readme_images/9.png" width="450" height="500">
+</div>
 
 Hence lastly I ranked OCRs from best to worst as below(acc to me):
 
@@ -158,8 +160,9 @@ If a box had check its value would be high and if not then there might not be ch
 
 After trial and error I decided the range above. I also applied upper limit as 200 because if some situation like below occurred it would have no problem as its pixel value would cross 220 above approx.
 
-
-![Failing scenario](Readme_images/13.png)  
+<div style="display:flex; justify-content:space-between;">
+    <img src="Readme_images/13.png" width="200" height="200">
+</div>
 
 Where would this fail?
 
