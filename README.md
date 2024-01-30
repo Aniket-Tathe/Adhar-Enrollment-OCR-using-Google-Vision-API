@@ -62,7 +62,9 @@ Below an input image given in document pdf that has first being matched and then
 
 Now according to these each of these snapshots/bounding boxes are sent to OCR to perform text detection. First I tried Pytesseract and I found that since it was good for detecting printed text but it was giving bad accuracy while detecting handwritten text like below.
 
-![Pytesseract output](Readme_images/4.png)
+<div style="display:flex; justify-content:space-between;">
+    <img src="Readme_images/4.png" width="400" height="450">
+</div>
 
 After reading few documentations I found that the accuracy of Pytesseract depends on many factors like the resolution of image, printed/handwritten text, blurriness, it is good for detecting text on high resolution printed documents.  
 
