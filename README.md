@@ -183,7 +183,7 @@ Signatures detected are directly saved in folders.
 
 In the end, Three algorithms have been proposed 
 
-1. **TrOCR**- Free, but not as accurate as Google Vision API, also gives many garbage values as the time goes.
+1. **TrOCR**- Free, but not as accurate as Google Vision API, also gives many garbage values as the over time.
 
 2. **GCV_free**: Can be used for 1000 forms per month for free. Drawback is if the cv2 operations fail to detect empty boxes it would be concatenated to text ones and during final outcome it will happens Eg: 5 input text boxes sent but only only 4 output were seen and to map which one from these 5input had empty box would not be ideal.  
 
