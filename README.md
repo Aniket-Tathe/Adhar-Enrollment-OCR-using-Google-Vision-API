@@ -8,7 +8,7 @@
 
 3. Developed an algorithm to digitize this process
 
-# This is Adhar Enrollment form of Government of India (Original vs Filled):
+# This is Aadhar Enrollment form of Government of India (Original vs Filled):
 
 <div style="display:flex; justify-content:space-between;">
     <img src="Data/aadhaar_enrolment_correction_form_version_2.1-1.jpg" width="400" height="500">
