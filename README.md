@@ -1,4 +1,4 @@
-# Adhar-Enrollment-OCR-using-Google-Vision-API
+# Aadhar-Enrollment-OCR-using-Google-Vision-API
 
 **Email:** anikettathe.08@gmail.com
 
